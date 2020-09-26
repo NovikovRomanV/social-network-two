@@ -1,10 +1,11 @@
 import React from "react";
 import s from './Post.module.css'
-type PostType = {
+
+type PostPropsType = {
     message: string
     countLike: number
 }
-const Post = (props: PostType) => {
+const Post = (props: PostPropsType) => {
     return (
         <div className={s.item}>
             <img alt={'img avatar'}

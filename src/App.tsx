@@ -8,7 +8,7 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-
+// lessons 19 next 20
 function App() {
     return (
         <BrowserRouter>
