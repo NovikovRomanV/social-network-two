@@ -1,4 +1,6 @@
-import React from "react";
+export let rerenderEntireTree = (state: stateType) => {
+    console.log("State change")
+}
 
 export type postType = {
     id: number
@@ -8,6 +10,7 @@ export type postType = {
 
 export type postsPropsType = {
     posts: Array<postType>
+    newPostText: string
 }
 
 export type messagePropsType = {
@@ -44,21 +47,22 @@ export type statePropsType = {
 }
 
 export type stateProfileType = {
-    state: postsPropsType
+    stateProfilePage: postsPropsType
 }
 
 export type stateDialogsType = {
     state: dialogsPropsType
 }
 
-export let state = {
+export let state: stateType = {
     profilePage: {
         posts: [
             {id: 1, message: 'Hi, how are?', countLike: 15},
-            {id: 1, message: "It's my first!", countLike: 10},
-            {id: 1, message: "It's my two!", countLike: 7},
-            {id: 1, message: "It's my three!", countLike: 5},
+            {id: 2, message: "It's my first!", countLike: 10},
+            {id: 3, message: "It's my two!", countLike: 7},
+            {id: 4, message: "It's my three!", countLike: 5},
         ],
+        newPostText: "",
     },
     messagePage: {
         messages: [
@@ -73,4 +77,35 @@ export let state = {
             {id: 4, name: "Sasha"},
         ],
     }
+}
+
+export type AddPostType = {
+    addPost: () => void
+}
+
+export const addPost = () => {
+
+    const newPost: postType = {
+        id: 1,
+        message: state.profilePage.newPostText,
+        countLike: 0
+    }
+    if (state.profilePage.newPostText) {
+        state.profilePage.posts.unshift(newPost)
+    }
+    state.profilePage.newPostText = ''
+    rerenderEntireTree(state);
+}
+
+export type ChangeNewPostType = {
+    changeNewPostText: (newMessage: string) => void
+}
+
+export const changeNewPostText = (newMessage: string) => {
+    state.profilePage.newPostText = newMessage
+    rerenderEntireTree(state)
+}
+
+export const subscribe = (observer: (state: stateType) => void) => {
+    rerenderEntireTree = observer;
 }
