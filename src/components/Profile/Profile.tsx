@@ -4,13 +4,16 @@ import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {AddPostType, ChangeNewPostType, stateProfileType} from "../../redux/state";
 
-const Profile = (props: stateProfileType & AddPostType & ChangeNewPostType) => {
+
+
+const Profile = (props: stateProfileType  & ChangeNewPostType & AddPostType) => {
 
     return (
         <div>
             <ProfileInfo/>
-            <MyPosts posts={props.stateProfilePage.posts} changeNewPostText={props.changeNewPostText}
-                     addPost={props.addPost} newPostText={props.stateProfilePage.newPostText}/>
+            <MyPosts posts={props.stateProfilePage.posts}
+                     // changeNewPostText={props.changeNewPostText}
+                     dispatch={props.dispatch} newPostText={props.stateProfilePage.newPostText}/>
         </div>
     )
 };

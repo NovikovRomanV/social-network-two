@@ -1,6 +1,5 @@
-export let rerenderEntireTree = (state: stateType) => {
-    console.log("State change")
-}
+const ADD_POST = "ADD-POST"
+const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 
 export type postType = {
     id: number
@@ -43,7 +42,7 @@ export type stateType = {
 }
 
 export type statePropsType = {
-    state: stateType
+    _state: stateType
 }
 
 export type stateProfileType = {
@@ -54,58 +53,120 @@ export type stateDialogsType = {
     state: dialogsPropsType
 }
 
-export let state: stateType = {
-    profilePage: {
-        posts: [
-            {id: 1, message: 'Hi, how are?', countLike: 15},
-            {id: 2, message: "It's my first!", countLike: 10},
-            {id: 3, message: "It's my two!", countLike: 7},
-            {id: 4, message: "It's my three!", countLike: 5},
-        ],
-        newPostText: "",
+export type storeType = {
+    _state: stateType,
+    getState: () => stateType,
+    rerenderEntireTree: () => void,
+    // addPost: () => void,
+    // changeNewPostText: (newMessage: string) => void,
+    subscribe: (observer: () => void) => void,
+    dispatch: (action: ActionsTypes)=>void
+}
+
+type AddPostActionType = {
+    type: "ADD-POST",
+    newPostText: string
+}
+
+type UpdateNewTextActionType = {
+    type: "UPDATE-NEW-POST-TEXT",
+    newMessage: string
+}
+
+export const addPostActionCreator = (newPostText: string): AddPostActionType => {
+    return {
+        type: ADD_POST,
+        newPostText: newPostText
+    }
+}
+
+export const updateNewPostTextActionCreator = (text: string): UpdateNewTextActionType => {
+    return {
+        type: UPDATE_NEW_POST_TEXT,
+        newMessage: text
+    }
+}
+
+export type ActionsTypes = AddPostActionType | UpdateNewTextActionType;
+
+let store: storeType = {
+    _state: {
+        profilePage: {
+            posts: [
+                {id: 1, message: 'Hi, how are?', countLike: 15},
+                {id: 2, message: "It's my first!", countLike: 10},
+                {id: 3, message: "It's my two!", countLike: 7},
+                {id: 4, message: "It's my three!", countLike: 5},
+            ],
+            newPostText: "",
+        },
+        messagePage: {
+            messages: [
+                {id: 1, message: "Hi!!!"},
+                {id: 2, message: "Hello! How are you?"},
+                {id: 3, message: "Things are good!"},
+            ],
+            dialogs: [
+                {id: 1, name: "Dimych"},
+                {id: 2, name: "Andrey"},
+                {id: 3, name: "Sveta"},
+                {id: 4, name: "Sasha"},
+            ],
+        }
     },
-    messagePage: {
-        messages: [
-            {id: 1, message: "Hi!!!"},
-            {id: 2, message: "Hello! How are you?"},
-            {id: 3, message: "Things are good!"},
-        ],
-        dialogs: [
-            {id: 1, name: "Dimych"},
-            {id: 2, name: "Andrey"},
-            {id: 3, name: "Sveta"},
-            {id: 4, name: "Sasha"},
-        ],
+    getState(){
+        return this._state
+    },
+    rerenderEntireTree() {
+        console.log("State changed");
+    },
+    // addPost() {
+    //     const newPost: postType = {
+    //         id: 1,
+    //         message: this._state.profilePage.newPostText,
+    //         countLike: 0
+    //     };
+    //     if (this._state.profilePage.newPostText) {
+    //         this._state.profilePage.posts.unshift(newPost)
+    //     };
+    //     this._state.profilePage.newPostText = '';
+    //     this.rerenderEntireTree();
+    // },
+    // changeNewPostText(newMessage: string) {
+    //     this._state.profilePage.newPostText = newMessage;
+    //     this.rerenderEntireTree();
+    // },
+    subscribe(observer) {
+        this.rerenderEntireTree = observer;
+    },
+    dispatch(action){
+        if(action.type === "ADD-POST"){
+            const newPost: postType = {
+                id: 1,
+                message: action.newPostText,
+                countLike: 0
+            };
+            if (this._state.profilePage.newPostText) {
+                this._state.profilePage.posts.unshift(newPost)
+            }
+            this._state.profilePage.newPostText = '';
+            this.rerenderEntireTree();
+        } else if (action.type === "UPDATE-NEW-POST-TEXT") {
+            this._state.profilePage.newPostText = action.newMessage;
+            this.rerenderEntireTree();
+        }
     }
 }
 
 export type AddPostType = {
-    addPost: () => void
-}
-
-export const addPost = () => {
-
-    const newPost: postType = {
-        id: 1,
-        message: state.profilePage.newPostText,
-        countLike: 0
-    }
-    if (state.profilePage.newPostText) {
-        state.profilePage.posts.unshift(newPost)
-    }
-    state.profilePage.newPostText = ''
-    rerenderEntireTree(state);
+    dispatch: (action: ActionsTypes)=>void
 }
 
 export type ChangeNewPostType = {
-    changeNewPostText: (newMessage: string) => void
+    // changeNewPostText: (newMessage: string) => void
+    dispatch: (action: ActionsTypes)=>void
 }
 
-export const changeNewPostText = (newMessage: string) => {
-    state.profilePage.newPostText = newMessage
-    rerenderEntireTree(state)
-}
 
-export const subscribe = (observer: (state: stateType) => void) => {
-    rerenderEntireTree = observer;
-}
+
+export default store;

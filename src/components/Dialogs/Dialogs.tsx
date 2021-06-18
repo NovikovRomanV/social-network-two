@@ -24,7 +24,7 @@ const Dialogs = (props: stateDialogsType) => {
                 {messagesElements}
             </div>
             <div>
-                <textarea ref={addMessageElement}></textarea>
+                <textarea ref={addMessageElement}/>
                 <button className={s.addMessage} onClick={addMessage}>Add message</button>
             </div>
         </div>
