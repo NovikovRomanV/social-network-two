@@ -1,5 +1,10 @@
+import {profileReducer} from "./profile-reducer";
+import {dialogsReducer} from "./dialogs-reducer";
+
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
+const UPDATE_NEW_MESSAGE_BODY = "UPDATE-NEW-MESSAGE-BODY"
+const SEND_MESSAGE = "SEND-MESSAGE"
 
 export type postType = {
     id: number
@@ -34,11 +39,14 @@ export type messageType = {
 export type dialogsPropsType = {
     dialogs: Array<dialogType>
     messages: Array<messageType>
+    newMessageBody: string
 }
 
 export type stateType = {
     profilePage: postsPropsType
     messagePage: dialogsPropsType
+    // profileReducer: (profilePage: postsPropsType, action: ActionsTypes) => postsPropsType
+    // dialogsReducer: (messagePage: dialogsPropsType, action: ActionsTypes) => dialogsPropsType
 }
 
 export type statePropsType = {
@@ -63,13 +71,13 @@ export type storeType = {
     dispatch: (action: ActionsTypes)=>void
 }
 
-type AddPostActionType = {
-    type: "ADD-POST",
+export type AddPostActionType = {
+    type: typeof  ADD_POST,
     newPostText: string
 }
 
-type UpdateNewTextActionType = {
-    type: "UPDATE-NEW-POST-TEXT",
+export type UpdateNewTextActionType = {
+    type: typeof UPDATE_NEW_POST_TEXT,
     newMessage: string
 }
 
@@ -77,17 +85,44 @@ export const addPostActionCreator = (newPostText: string): AddPostActionType => 
     return {
         type: ADD_POST,
         newPostText: newPostText
-    }
+    } as const
 }
-
 export const updateNewPostTextActionCreator = (text: string): UpdateNewTextActionType => {
     return {
         type: UPDATE_NEW_POST_TEXT,
         newMessage: text
-    }
+    } as const
 }
 
-export type ActionsTypes = AddPostActionType | UpdateNewTextActionType;
+export type SendMessageType = {
+    type: typeof SEND_MESSAGE,
+    text: string
+}
+export type UpdateNewMessageBodyType = {
+    type: typeof UPDATE_NEW_MESSAGE_BODY,
+    body: string
+}
+
+export type AddPostType = {
+    dispatch: (action: ActionsTypes)=>void
+}
+export type ChangeNewPostType = {
+    // changeNewPostText: (newMessage: string) => void
+    dispatch: (action: ActionsTypes)=>void
+}
+
+export const sendMessageCreator = (text: string): SendMessageType => ({type: SEND_MESSAGE, text: text}) as const;
+export const updateNewMessageBodyCreator = (body: string): UpdateNewMessageBodyType => {
+    return {
+        type: UPDATE_NEW_MESSAGE_BODY,
+        body
+    } as const
+}
+
+export type ActionsTypes = AddPostActionType
+     | UpdateNewTextActionType
+     | UpdateNewMessageBodyType
+     | SendMessageType;
 
 let store: storeType = {
     _state: {
@@ -112,6 +147,7 @@ let store: storeType = {
                 {id: 3, name: "Sveta"},
                 {id: 4, name: "Sasha"},
             ],
+            newMessageBody: '',
         }
     },
     getState(){
@@ -140,33 +176,33 @@ let store: storeType = {
         this.rerenderEntireTree = observer;
     },
     dispatch(action){
-        if(action.type === "ADD-POST"){
-            const newPost: postType = {
-                id: 1,
-                message: action.newPostText,
-                countLike: 0
-            };
-            if (this._state.profilePage.newPostText) {
-                this._state.profilePage.posts.unshift(newPost)
-            }
-            this._state.profilePage.newPostText = '';
-            this.rerenderEntireTree();
-        } else if (action.type === "UPDATE-NEW-POST-TEXT") {
-            this._state.profilePage.newPostText = action.newMessage;
-            this.rerenderEntireTree();
-        }
+        this._state.profilePage = this._state.profileReducer(this._state.profilePage, action);
+        this._state.messagePage = this._state.dialogsReducer(this._state.messagePage, action);
+        this.rerenderEntireTree();
+        // if(action.type === ADD_POST){
+        //     const newPost: postType = {
+        //         id: 1,
+        //         message: action.newPostText,
+        //         countLike: 0
+        //     };
+        //     if (this._state.profilePage.newPostText) {
+        //         this._state.profilePage.posts.unshift(newPost)
+        //     }
+        //     this._state.profilePage.newPostText = '';
+        //     this.rerenderEntireTree();
+        // } else if (action.type === UPDATE_NEW_POST_TEXT) {
+        //     this._state.profilePage.newPostText = action.newMessage;
+        //     this.rerenderEntireTree();
+        // } else if (action.type === UPDATE_NEW_MESSAGE_BODY){
+        //     this._state.messagePage.newMessageBody = action.body;
+        //     this.rerenderEntireTree();
+        // } else if (action.type === SEND_MESSAGE){
+        //     let body = this._state.messagePage.newMessageBody;
+        //     this._state.messagePage.newMessageBody = "";
+        //     this._state.messagePage.messages.push({id: 6, message: body});
+        //     this.rerenderEntireTree();
+        // }
     }
 }
-
-export type AddPostType = {
-    dispatch: (action: ActionsTypes)=>void
-}
-
-export type ChangeNewPostType = {
-    // changeNewPostText: (newMessage: string) => void
-    dispatch: (action: ActionsTypes)=>void
-}
-
-
 
 export default store;
