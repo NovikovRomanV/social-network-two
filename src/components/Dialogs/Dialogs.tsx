@@ -4,10 +4,9 @@ import Message from "./Message/Message";
 import DialogItem from "./DialogItem/DialogItem";
 import {
     AddPostType, ChangeNewPostType,
-    sendMessageCreator,
     stateDialogsType,
-    updateNewMessageBodyCreator
-} from "../../redux/state";
+} from "../../redux/store";
+import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
 
 const Dialogs = (props: stateDialogsType & AddPostType & ChangeNewPostType) => {
 

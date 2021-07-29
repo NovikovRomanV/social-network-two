@@ -1,5 +1,6 @@
 import {profileReducer} from "./profile-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
+import {Dispatch} from "react";
 
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
@@ -69,6 +70,7 @@ export type storeType = {
     // changeNewPostText: (newMessage: string) => void,
     subscribe: (observer: () => void) => void,
     dispatch: (action: ActionsTypes)=>void
+
 }
 
 export type AddPostActionType = {
@@ -81,18 +83,7 @@ export type UpdateNewTextActionType = {
     newMessage: string
 }
 
-export const addPostActionCreator = (newPostText: string): AddPostActionType => {
-    return {
-        type: ADD_POST,
-        newPostText: newPostText
-    } as const
-}
-export const updateNewPostTextActionCreator = (text: string): UpdateNewTextActionType => {
-    return {
-        type: UPDATE_NEW_POST_TEXT,
-        newMessage: text
-    } as const
-}
+
 
 export type SendMessageType = {
     type: typeof SEND_MESSAGE,
@@ -111,13 +102,6 @@ export type ChangeNewPostType = {
     dispatch: (action: ActionsTypes)=>void
 }
 
-export const sendMessageCreator = (text: string): SendMessageType => ({type: SEND_MESSAGE, text: text}) as const;
-export const updateNewMessageBodyCreator = (body: string): UpdateNewMessageBodyType => {
-    return {
-        type: UPDATE_NEW_MESSAGE_BODY,
-        body
-    } as const
-}
 
 export type ActionsTypes = AddPostActionType
      | UpdateNewTextActionType
@@ -148,7 +132,8 @@ let store: storeType = {
                 {id: 4, name: "Sasha"},
             ],
             newMessageBody: '',
-        }
+        },
+
     },
     getState(){
         return this._state
@@ -176,8 +161,8 @@ let store: storeType = {
         this.rerenderEntireTree = observer;
     },
     dispatch(action){
-        this._state.profilePage = this._state.profileReducer(this._state.profilePage, action);
-        this._state.messagePage = this._state.dialogsReducer(this._state.messagePage, action);
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.messagePage = dialogsReducer(this._state.messagePage, action);
         this.rerenderEntireTree();
         // if(action.type === ADD_POST){
         //     const newPost: postType = {
