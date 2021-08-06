@@ -2,31 +2,36 @@ import React, {ChangeEvent} from "react";
 import s from "./Dialogs.module.css";
 import Message from "./Message/Message";
 import DialogItem from "./DialogItem/DialogItem";
-import {
-    AddPostType, ChangeNewPostType,
-    stateDialogsType,
-} from "../../redux/store";
-import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
+import {dialogsPropsType} from "../../redux/store";
 
-const Dialogs = (props: stateDialogsType & AddPostType & ChangeNewPostType) => {
+type OnNewMessageChangeType = {
+    updateNewMessageChange: (body: string) => void
+}
+type OnSendMessageClickType = {
+    onSendMessageClick: () => void
+}
+type StateType = {
+    messagePage: dialogsPropsType
+}
 
-    let dialogsElement = props.state.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>);
-    let messagesElements = props.state.messages.map(m => <Message message={m.message}/>);
-    let newMessageBody = props.state.newMessageBody;
+const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickType) => {
+
+    let dialogsElement = props.messagePage.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>);
+    let messagesElements = props.messagePage.messages.map(m => <Message message={m.message}/>);
+    let newMessageBody = props.messagePage.newMessageBody;
 
     let onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        let body = e.target.value;
-        props.dispatch(updateNewMessageBodyCreator(body))
+        let body = e.currentTarget.value;
+        props.updateNewMessageChange(body)
     }
 
     // let addMessageElement = React.createRef<HTMLTextAreaElement>();
     let onSendMessageClick = () => {
-       // let text = addMessageElement.current?.value
-       // if(text !== undefined){
-       //    props.dispatch(sendMessageCreator(text))
-       // }
-        props.dispatch(sendMessageCreator(props.state.newMessageBody))
-
+        // let text = addMessageElement.current?.value
+        // if(text !== undefined){
+        //    props.dispatch(sendMessageCreator(text))
+        // }
+        props.onSendMessageClick()
     }
 
     return (

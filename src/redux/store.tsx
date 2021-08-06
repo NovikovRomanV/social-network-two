@@ -99,7 +99,7 @@ export type AddPostType = {
 }
 export type ChangeNewPostType = {
     // changeNewPostText: (newMessage: string) => void
-    dispatch: (action: ActionsTypes)=>void
+    // dispatch: (action: ActionsTypes)=>void
 }
 
 
