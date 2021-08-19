@@ -7,14 +7,11 @@ import {PropsType} from "../../App";
 
 
 
-const Profile = (props: PropsType) => {
-
+const Profile = () => {
     return (
         <div>
             <ProfileInfo/>
-            <MyPostsContainer
-               store={props.store}
-            />
+            <MyPostsContainer/>
         </div>
     )
 };
