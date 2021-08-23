@@ -3,21 +3,22 @@ import s from "./Dialogs.module.css";
 import Message from "./Message/Message";
 import DialogItem from "./DialogItem/DialogItem";
 import {dialogsPropsType} from "../../redux/store";
+import {InitialStateType} from "../../redux/dialogs-reducer";
 
 type OnNewMessageChangeType = {
     updateNewMessageChange: (body: string) => void
 }
 type OnSendMessageClickType = {
-    onSendMessageClick: () => void
+    onSendMessageClick: (newMessageBody: string) => void
 }
-type StateType = {
-    messagePage: dialogsPropsType
+export type StateType = {
+    messagePage: InitialStateType
 }
 
 const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickType) => {
 
-    let dialogsElement = props.messagePage.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>);
-    let messagesElements = props.messagePage.messages.map(m => <Message message={m.message}/>);
+    let dialogsElement = props.messagePage.dialogs.map(d => <DialogItem key={d.id} name={d.name} id={d.id}/>);
+    let messagesElements = props.messagePage.messages.map(m => <Message message={m.message} key={m.id}/>);
     let newMessageBody = props.messagePage.newMessageBody;
 
     let onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -31,7 +32,7 @@ const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickT
         // if(text !== undefined){
         //    props.dispatch(sendMessageCreator(text))
         // }
-        props.onSendMessageClick()
+        props.onSendMessageClick(newMessageBody)
     }
 
     return (

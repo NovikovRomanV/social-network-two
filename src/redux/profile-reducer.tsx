@@ -1,21 +1,30 @@
-import {ActionsTypes, AddPostActionType, postsPropsType, postType, UpdateNewTextActionType} from "./store";
+import {ActionsTypes, AddPostActionType, postsPropsType, UpdateNewTextActionType} from "./store";
 
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 
 type stateProfileReducerType = postsPropsType & AddPostActionType & UpdateNewTextActionType
 
-let initialState: postsPropsType = {
+export type InitialStateType = typeof initialState
+export type postType = {
+    id: number
+    message: string
+    countLike: number
+}
+let initialState = {
     posts: [
         {id: 1, message: 'Hi, how are?', countLike: 15},
         {id: 2, message: "It's my first!", countLike: 10},
         {id: 3, message: "It's my two!", countLike: 7},
         {id: 4, message: "It's my three!", countLike: 5},
-    ],
+    ] as Array<postType>,
     newPostText: "",
 }
 
-export const profileReducer = (state: postsPropsType = initialState, action: ActionsTypes): postsPropsType => {
+export const profileReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
+
+    let stateCopy;
+
     switch (action.type) {
         case ADD_POST:
             const newPost: postType = {
@@ -23,14 +32,19 @@ export const profileReducer = (state: postsPropsType = initialState, action: Act
                 message: action.newPostText,
                 countLike: 0
             };
-            if (state.newPostText) {
-                state.posts.unshift(newPost)
+            stateCopy = {...state};
+            if (stateCopy.newPostText) {
+                stateCopy.posts = [...state.posts, newPost];
+                // stateCopy.posts.unshift(newPost);
             }
-            state.newPostText = '';
-            return state;
+            stateCopy.newPostText = '';
+            return stateCopy;
+
         case UPDATE_NEW_POST_TEXT:
-            state.newPostText = action.newMessage;
-            return state;
+            stateCopy = {...state};
+            stateCopy.newPostText = action.newMessage;
+            return stateCopy;
+
         default:
             return state;
     }

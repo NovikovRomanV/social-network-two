@@ -1,21 +1,21 @@
 import React, {ChangeEvent} from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
-import {postsPropsType} from "../../../redux/store";
+import {InitialStateType} from "../../../redux/profile-reducer";
 
 type AddPostType = {
-    addPost: () => void
+    addPost: (newPostText: string) => void
 }
 type OnPostChangeType = {
     onPostChange: (text: string) => void
 }
 
-const MyPosts = (props: postsPropsType & AddPostType & OnPostChangeType) => {
+const MyPosts = (props: InitialStateType & AddPostType & OnPostChangeType) => {
 
     let postsElements = props.posts.map(p => <Post key={p.id} message={p.message} countLike={p.countLike} id={p.id}/>)
 
     let addPost = () => {
-        props.addPost()
+        props.addPost(props.newPostText)
     }
 
     let onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

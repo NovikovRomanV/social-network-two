@@ -7,7 +7,7 @@ const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 const UPDATE_NEW_MESSAGE_BODY = "UPDATE-NEW-MESSAGE-BODY"
 const SEND_MESSAGE = "SEND-MESSAGE"
 
-export type postType = {
+type postType = {
     id: number
     message: string
     countLike: number
@@ -27,12 +27,12 @@ export type dialogItemType = {
     id: number
 }
 
-export type dialogType = {
+type dialogType = {
     id: number
     name: string
 }
 
-export type messageType = {
+type messageType = {
     id: number
     message: string
 }
