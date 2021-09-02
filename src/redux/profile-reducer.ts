@@ -34,8 +34,8 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             };
             stateCopy = {...state};
             if (stateCopy.newPostText) {
-                stateCopy.posts = [...state.posts, newPost];
-                // stateCopy.posts.unshift(newPost);
+                stateCopy.posts = [...state.posts];
+                stateCopy.posts.unshift(newPost);
             }
             stateCopy.newPostText = '';
             return stateCopy;
