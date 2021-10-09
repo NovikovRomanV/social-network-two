@@ -7,6 +7,10 @@
       "esnext"
     ],
     "allowJs": true,
+    "checkJs": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true,
+    "typeRoots": ["./typings", "node_modules/@types"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
