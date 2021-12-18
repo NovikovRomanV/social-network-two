@@ -1,8 +1,9 @@
 
-
-const FOLLOW = "FOLLOW"
-const UNFOLLOW = "UNFOLLOW"
-const SET_USERS = "SET-USERS"
+const FOLLOW = "FOLLOW";
+const UNFOLLOW = "UNFOLLOW";
+const SET_USERS = "SET-USERS";
+const SET_CURRENT_PAGE = "SET-CURRENT-PAGE";
+const SET_TOTAL_USERS_COUNT = "SET-TOTAL-USERS-COUNT";
 
 export type UserType = {
     id: number
@@ -20,10 +21,16 @@ export type UserType = {
 
 export type UsersStateType = {
     users: Array<UserType>
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
 }
 
 let usersState: UsersStateType = {
-    users: []
+    users: [],
+    pageSize: 10,
+    totalUsersCount: 0,
+    currentPage: 1,
 }
 
 export type FollowACType = {
@@ -41,7 +48,17 @@ export type SetUsersACType = {
     users: Array<UserType>
 }
 
-export type ActionType = FollowACType | UnfollowACType | SetUsersACType
+export type SetCurrentPageACType = {
+    type: typeof SET_CURRENT_PAGE
+    currentPage: number
+}
+
+export type SetTotalUsersCountACType = {
+    type: typeof SET_TOTAL_USERS_COUNT
+    count: number
+}
+
+export type ActionType = FollowACType | UnfollowACType | SetUsersACType | SetCurrentPageACType | SetTotalUsersCountACType
 
 export const usersReducer = (state: UsersStateType = usersState, action: ActionType): UsersStateType => {
     switch (action.type) {
@@ -56,7 +73,6 @@ export const usersReducer = (state: UsersStateType = usersState, action: ActionT
                     }
                 )
             };
-
         case UNFOLLOW:
             return {
                 ...state,
@@ -68,10 +84,12 @@ export const usersReducer = (state: UsersStateType = usersState, action: ActionT
                     }
                 )
             };
-
         case SET_USERS:
-            return {...state, users: [...state.users, ...action.users]};
-
+            return {...state, users: action.users};
+        case SET_CURRENT_PAGE:
+            return {...state, currentPage: action.currentPage};
+        case SET_TOTAL_USERS_COUNT:
+            return {...state, totalUsersCount: action.count};
         default:
         return state;
     }
@@ -80,3 +98,5 @@ export const usersReducer = (state: UsersStateType = usersState, action: ActionT
 export const followAC = (userId: number): FollowACType => ({type: FOLLOW, userId: userId} as const)
 export const unfollowAC = (userId: number): UnfollowACType => ({type: UNFOLLOW, userId: userId} as const)
 export const setUsersAC = (users: Array<UserType>): SetUsersACType => ({type: SET_USERS, users: users} as const)
+export const setCurrentPageAC = (currentPage: number): SetCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage: currentPage} as const)
+export const setTotalUsersCountAC = (totalUsersCount: number): SetTotalUsersCountACType => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount} as const)
