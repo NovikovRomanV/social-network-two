@@ -1,9 +1,33 @@
-import {ActionsTypes, AddPostActionType, postsPropsType, UpdateNewTextActionType} from "./store";
+import {
+    postsPropsType,
+    stateProfileType,
+
+} from "./store";
+import {UsersPropsType} from "../components/Users/Users";
+import {ProfileType} from "../components/Profile/ProfileContainer";
+import {ProfilePropsType} from "../components/Profile/Profile";
 
 const ADD_POST = "ADD-POST"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
+const SET_USERS_PROFILE = "SET-USERS-PROFILE"
 
-type stateProfileReducerType = postsPropsType & AddPostActionType & UpdateNewTextActionType
+export type AddPostActionType = {
+    type: typeof  ADD_POST,
+    newPostText: string
+}
+
+export type UpdateNewTextActionType = {
+    type: typeof UPDATE_NEW_POST_TEXT,
+    newMessage: string
+}
+
+export type SetUsersProfileActionType = {
+    type: typeof SET_USERS_PROFILE,
+    profile: any
+}
+
+type ActionsTypes = AddPostActionType | UpdateNewTextActionType | SetUsersProfileActionType
+// type stateProfileReducerType = postsPropsType & AddPostActionType & UpdateNewTextActionType
 
 export type InitialStateType = typeof initialState
 export type postType = {
@@ -19,6 +43,7 @@ let initialState = {
         {id: 4, message: "It's my three!", countLike: 5},
     ] as Array<postType>,
     newPostText: "",
+    profile: null,
 }
 
 export const profileReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
@@ -39,12 +64,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             }
             stateCopy.newPostText = '';
             return stateCopy;
-
         case UPDATE_NEW_POST_TEXT:
             stateCopy = {...state};
             stateCopy.newPostText = action.newMessage;
             return stateCopy;
-
+        case SET_USERS_PROFILE:
+            return {...state, profile: action.profile };
         default:
             return state;
     }
@@ -60,5 +85,12 @@ export const updateNewPostTextActionCreator = (text: string): UpdateNewTextActio
     return {
         type: UPDATE_NEW_POST_TEXT,
         newMessage: text
+    } as const
+}
+
+export const setUsersProfile = (profile: ProfileType): SetUsersProfileActionType => {
+    return {
+        type: SET_USERS_PROFILE,
+        profile: profile
     } as const
 }

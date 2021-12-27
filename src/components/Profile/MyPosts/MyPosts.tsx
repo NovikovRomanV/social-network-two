@@ -10,6 +10,8 @@ type OnPostChangeType = {
     onPostChange: (text: string) => void
 }
 
+
+
 const MyPosts = (props: InitialStateType & AddPostType & OnPostChangeType) => {
 
     let postsElements = props.posts.map(p => <Post key={p.id} message={p.message} countLike={p.countLike} id={p.id}/>)

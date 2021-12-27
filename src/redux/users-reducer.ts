@@ -105,9 +105,9 @@ export const usersReducer = (state: UsersStateType = usersState, action: ActionT
     }
 }
 
-export const followAC = (userId: number): FollowACType => ({type: FOLLOW, userId: userId} as const)
-export const unfollowAC = (userId: number): UnfollowACType => ({type: UNFOLLOW, userId: userId} as const)
-export const setUsersAC = (users: Array<UserType>): SetUsersACType => ({type: SET_USERS, users: users} as const)
-export const setCurrentPageAC = (currentPage: number): SetCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage: currentPage} as const)
-export const setTotalUsersCountAC = (totalUsersCount: number): SetTotalUsersCountACType => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount} as const)
-export const toggleIsFetchingAC = (isFetching: boolean): toggleIsFetchingACType => ({type: TOGGLE_IS_FETCHING, isFetching } as const)
+export const follow = (userId: number): FollowACType => ({type: FOLLOW, userId: userId} as const)
+export const unfollow = (userId: number): UnfollowACType => ({type: UNFOLLOW, userId: userId} as const)
+export const setUsers = (users: Array<UserType>): SetUsersACType => ({type: SET_USERS, users: users} as const)
+export const setCurrentPage = (currentPage: number): SetCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage: currentPage} as const)
+export const setTotalUsersCount = (totalUsersCount: number): SetTotalUsersCountACType => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount} as const)
+export const toggleIsFetching = (isFetching: boolean): toggleIsFetchingACType => ({type: TOGGLE_IS_FETCHING, isFetching } as const)

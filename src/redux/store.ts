@@ -7,6 +7,7 @@ const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 const UPDATE_NEW_MESSAGE_BODY = "UPDATE-NEW-MESSAGE-BODY"
 const SEND_MESSAGE = "SEND-MESSAGE"
 
+
 type postType = {
     id: number
     message: string
@@ -106,7 +107,8 @@ export type ChangeNewPostType = {
 export type ActionsTypes = AddPostActionType
      | UpdateNewTextActionType
      | UpdateNewMessageBodyType
-     | SendMessageType;
+     | SendMessageType
+     ;
 
 let store: storeType = {
     _state: {
@@ -161,7 +163,7 @@ let store: storeType = {
         this.rerenderEntireTree = observer;
     },
     dispatch(action){
-        this._state.profilePage = profileReducer(this._state.profilePage, action);
+         // this._state.profilePage = profileReducer(this._state.profilePage, action);
         this._state.messagePage = dialogsReducer(this._state.messagePage, action);
         this.rerenderEntireTree();
         // if(action.type === ADD_POST){
