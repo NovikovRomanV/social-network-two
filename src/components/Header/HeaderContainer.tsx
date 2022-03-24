@@ -29,7 +29,6 @@ class HeaderContainer extends React.Component<HeaderContainerType & mapDispatchT
                 this.props.setAuthUserData(id, email, login);
             }
         })
-
     }
 
     render() {
@@ -45,7 +44,6 @@ type MapStateToPropsType = {
 const mapStateToProps = (state: MapStateToPropsType) => ({
     isAuth: state.auth.isAuth,
     login: state.auth.login,
-
 });
 
 export default connect(mapStateToProps, {setAuthUserData})(HeaderContainer);

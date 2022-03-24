@@ -1,3 +1,5 @@
+import {Dispatch} from "redux";
+import usersAPI from "../api/api";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -112,7 +114,7 @@ export const usersReducer = (state: UsersStateType = usersState, action: ActionT
         case TOGGLE_IS_FOLLOWING_PROGRESS: {
             return {...state, followingInProgress: action.isFetching ?
                     [...state.followingInProgress, action.userId] :
-                    state.followingInProgress.filter(id => id != action.userId)
+                    state.followingInProgress.filter(id => id !== action.userId)
             }
         }
         default:
@@ -127,3 +129,12 @@ export const setCurrentPage = (currentPage: number): SetCurrentPageACType => ({t
 export const setTotalUsersCount = (totalUsersCount: number): SetTotalUsersCountACType => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount} as const)
 export const toggleIsFetching = (isFetching: boolean): toggleIsFetchingACType => ({type: TOGGLE_IS_FETCHING, isFetching } as const)
 export const toggleFollowingProgress = (isFetching: boolean, userId: number): toggleIsFollowingProgressACType => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId} as const)
+
+export const getUsers = (currentPage: number, pageSize: number) => (dispatch: Dispatch) => {
+   dispatch(toggleIsFetching(true));
+    usersAPI.getUsers(currentPage, pageSize).then(data => {
+        dispatch(toggleIsFetching(false));
+        dispatch(setUsers(data.items));
+        dispatch(setTotalUsersCount(data.totalCount))
+    });
+}
