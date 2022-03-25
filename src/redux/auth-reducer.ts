@@ -42,4 +42,6 @@ export const setAuthUserData = (userId: string, email: string, login: string) =>
     data: {userId, email, login}
 });
 
+
+
 export default authReducer;

@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import usersAPI from "../api/api";
+import {usersAPI} from "../api/api";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -122,8 +122,8 @@ export const usersReducer = (state: UsersStateType = usersState, action: ActionT
     }
 }
 
-export const follow = (userId: number): FollowACType => ({type: FOLLOW, userId: userId} as const)
-export const unfollow = (userId: number): UnfollowACType => ({type: UNFOLLOW, userId: userId} as const)
+export const followSuccess = (userId: number): FollowACType => ({type: FOLLOW, userId: userId} as const)
+export const unfollowSuccess = (userId: number): UnfollowACType => ({type: UNFOLLOW, userId: userId} as const)
 export const setUsers = (users: Array<UserType>): SetUsersACType => ({type: SET_USERS, users: users} as const)
 export const setCurrentPage = (currentPage: number): SetCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage: currentPage} as const)
 export const setTotalUsersCount = (totalUsersCount: number): SetTotalUsersCountACType => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount} as const)
@@ -137,4 +137,26 @@ export const getUsers = (currentPage: number, pageSize: number) => (dispatch: Di
         dispatch(setUsers(data.items));
         dispatch(setTotalUsersCount(data.totalCount))
     });
+}
+
+export const unfollow = (userId: number) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    usersAPI.unfollow(userId)
+        .then(response => {
+            if(response.data.resultCode === 1){
+                dispatch(unfollowSuccess(userId))
+            }
+            dispatch(toggleFollowingProgress(false, userId))
+        })
+}
+
+export const follow = (userId: number) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    usersAPI.follow(userId)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(followSuccess(userId));
+            }
+            dispatch(toggleFollowingProgress(false, userId))
+        })
 }
