@@ -27,3 +27,10 @@ export const authAPI = {
     }
 }
 
+export const profileAPI = {
+    getProfile (userID: string) {
+        return instance.get<any>(`profile/${userID}`)
+
+    }
+}
+
