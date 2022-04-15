@@ -32,12 +32,21 @@ import {Dispatch} from "redux";
 //     )
 // }
 
-let mapStateToProps = (state: StateType) => {
-    return{
-        messagePage: state.messagePage
+type mapStateToPropsType = {
+    messagePage: InitialStateType
+    auth: {
+        isAuth: boolean
     }
+
 }
 
+let mapStateToProps = (state: mapStateToPropsType) => {
+    return{
+        messagePage: state.messagePage,
+        isAuth: state.auth.isAuth
+    }
+}
+debugger
 let mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         updateNewMessageChange: (body: string) => {dispatch(updateNewMessageBodyCreator(body))},

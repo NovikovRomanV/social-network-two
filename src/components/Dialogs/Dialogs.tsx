@@ -4,6 +4,10 @@ import Message from "./Message/Message";
 import DialogItem from "./DialogItem/DialogItem";
 import {dialogsPropsType} from "../../redux/store";
 import {InitialStateType} from "../../redux/dialogs-reducer";
+import {Redirect} from "react-router-dom";
+import {InitialStateAuthType} from "../../redux/auth-reducer";
+
+
 
 type OnNewMessageChangeType = {
     updateNewMessageChange: (body: string) => void
@@ -15,7 +19,11 @@ export type StateType = {
     messagePage: InitialStateType
 }
 
-const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickType) => {
+type IsAuthType = {
+    isAuth: boolean
+}
+
+const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickType & IsAuthType) => {
 
     let dialogsElement = props.messagePage.dialogs.map(d => <DialogItem key={d.id} name={d.name} id={d.id}/>);
     let messagesElements = props.messagePage.messages.map(m => <Message message={m.message} key={m.id}/>);
@@ -34,6 +42,8 @@ const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickT
         // }
         props.onSendMessageClick(newMessageBody)
     }
+debugger
+    if(!props.isAuth){return <Redirect to="/login" />}
 
     return (
         <div className={s.dialogs}>

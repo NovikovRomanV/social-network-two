@@ -3,7 +3,7 @@ import {Dispatch} from "redux";
 
 const SET_USER_DATA = "SET-USER-DATA";
 
-type InitialStateType = {
+export type InitialStateAuthType = {
     userId: string | null
     email: string | null
     login: string | null
@@ -27,7 +27,8 @@ let initialState = {
     isAuth: false,
 };
 
-const authReducer = (state: InitialStateType = initialState, action: ActionType) => {
+const authReducer = (state: InitialStateAuthType = initialState, action: ActionType) => {
+   debugger
     switch (action.type) {
         case SET_USER_DATA:
             return {
@@ -35,6 +36,7 @@ const authReducer = (state: InitialStateType = initialState, action: ActionType)
                 ...action.data,
                 isAuth: true
             }
+
         default:
             return state;
     }
@@ -46,8 +48,10 @@ export const setAuthUserData = (userId: string, email: string, login: string) =>
 });
 
 export const getAuthUser = () => (dispatch: Dispatch) => {
+    debugger
     authAPI.getAuth().then(response => {
         if (response.data.resultCode === 0) {
+            debugger
             let {id, email, login} = response.data.data
             dispatch (setAuthUserData(id, email, login));
         }

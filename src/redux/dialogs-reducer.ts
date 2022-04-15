@@ -14,10 +14,12 @@ export type MessageType = {
     message: string
 }
 
+
 export type InitialStateType = {
     messages: Array<MessageType>
     dialogs: Array<DialogType>
     newMessageBody: string
+
 }
 
 // export type InitialStateType = typeof initialState
@@ -39,7 +41,7 @@ let initialState = {
 
 export const dialogsReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
 
-    let stateCopy;
+
 
     switch (action.type) {
         case UPDATE_NEW_MESSAGE_BODY:

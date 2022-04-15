@@ -1,11 +1,9 @@
 import React from 'react';
-import Profile, {ProfilePropsType} from "./Profile";
-import axios from "axios";
+import Profile from "./Profile";
 import {connect} from "react-redux";
 import {getUserProfile, setUsersProfile} from "../../redux/profile-reducer";
 import {StateType} from "./MyPosts/MyPostsContainer";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {profileAPI} from "../../api/api";
 
 export type ProfileType = {
     userId: string

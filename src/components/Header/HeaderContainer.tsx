@@ -20,15 +20,18 @@ type mapDispatchToPropsType = {
                       ) => void
 }
 
-class HeaderContainer extends React.Component<HeaderContainerType & mapDispatchToPropsType> {
+class HeaderContainer extends React.Component<HeaderContainerType & mapDispatchToPropsType>
+    {
     componentDidMount() {
-        getAuthUser()
-        // authAPI.getAuth().then(response => {
-        //     if (response.data.resultCode === 0) {
-        //         let {id, email, login} = response.data.data
-        //         this.props.setAuthUserData(id, email, login);
-        //     }
-        // })
+        debugger
+        // getAuthUser()
+        authAPI.getAuth().then(response => {
+debugger
+            if (response.data.resultCode === 0) {
+                let {id, email, login} = response.data.data
+                this.props.setAuthUserData(id, email, login);
+            }
+        })
     }
 
     render() {
