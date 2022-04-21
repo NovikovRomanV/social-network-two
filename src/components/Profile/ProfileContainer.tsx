@@ -28,6 +28,7 @@ export type ProfileType = {
 
 type MapStatePropsType = {
     profile: ProfileType | null
+    isAuth: boolean
 }
 
 type MapDispatchPropsType = {
@@ -66,8 +67,10 @@ class ProfileContainer extends React.Component <PropsType> {
     }
 }
 
-let mapStateToProps = (state: StateType): MapStatePropsType => ({
-    profile: state.profilePage.profile
+let mapStateToProps = (state: StateType ): MapStatePropsType => ({
+    profile: state.profilePage.profile,
+    isAuth: state.auth.isAuth
+
 })
 
 let WithUrlDataContainerComponent = withRouter(ProfileContainer)

@@ -5,12 +5,16 @@ import {AddPostType, ChangeNewPostType, stateProfileType} from "../../redux/stor
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import {PropsType} from "../../App";
 import {ProfileType} from "./ProfileContainer";
+import {Redirect} from "react-router-dom";
 
 export type ProfilePropsType = {
     profile: ProfileType | null
+    isAuth: boolean
 }
 
-const Profile = (props: ProfilePropsType) => {
+
+const Profile = (props: ProfilePropsType ) => {
+    if(!props.isAuth){return <Redirect to="/login" />}
     return (
         <div>
             <ProfileInfo profile={props.profile} />

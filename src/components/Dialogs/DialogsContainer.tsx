@@ -46,7 +46,7 @@ let mapStateToProps = (state: mapStateToPropsType) => {
         isAuth: state.auth.isAuth
     }
 }
-debugger
+
 let mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         updateNewMessageChange: (body: string) => {dispatch(updateNewMessageBodyCreator(body))},

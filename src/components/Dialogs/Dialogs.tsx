@@ -42,7 +42,7 @@ const Dialogs = (props: StateType & OnNewMessageChangeType & OnSendMessageClickT
         // }
         props.onSendMessageClick(newMessageBody)
     }
-debugger
+
     if(!props.isAuth){return <Redirect to="/login" />}
 
     return (

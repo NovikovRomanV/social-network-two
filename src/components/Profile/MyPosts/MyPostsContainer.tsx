@@ -38,6 +38,9 @@ import {postsPropsType} from "../../../redux/store";
 
 export type StateType = {
     profilePage: InitialStateType
+   auth: {
+        isAuth: boolean
+   }
 }
 
 let mapStateToProps = (state: StateType) => {
